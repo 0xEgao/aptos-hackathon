@@ -44,7 +44,8 @@ Welcome to the **Pokémon NFT Marketplace**, a decentralized platform built on t
 - Handles minting and ensures NFTs are uniquely identified and stored.
 
 ### 🌐 Frontend
-- Built with modern web technologies to provide an intuitive user experience.
+- Built with React(Vite+ts) to provide an intuitive user experience.
+- The images have been stored on supabase.
 
 ---
 
