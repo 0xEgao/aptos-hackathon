@@ -22,7 +22,7 @@ module pokemon_marketplace::main {
 
     const COLLECTION_NAME: vector<u8> = b"Pokemon Collection V1";
     const COLLECTION_DESCRIPTION: vector<u8> = b"A collection of unique Pokemon NFTs";
-    const COLLECTION_URI: vector<u8> = b"https://xxplwdmjiahdwvjqlivi.supabase.co/storage/v1/object/public/pokemon-nfts/collection.svg";
+    const COLLECTION_URI: vector<u8> = b"https://uowzmkydtkkfpldhprmm.supabase.co/storage/v1/object/public/pokemon-nfts//8.svg";
     const SEED: vector<u8> = b"POKEMON_NFT_V1";
 
     struct Pokemon has key {
@@ -37,6 +37,11 @@ module pokemon_marketplace::main {
 
     struct PokemonURIs has key {
         uris: vector<String>,
+    }
+
+    struct FractionalShare {
+        owner: address,
+        share: u64,
     }
 
     #[event]
@@ -82,7 +87,7 @@ module pokemon_marketplace::main {
 
     fun initialize_pokemon_uris(): vector<String> {
         let uris = vector::empty<String>();
-        let base_uri = b"https://xxplwdmjiahdwvjqlivi.supabase.co/storage/v1/object/public/pokemon-nfts/";
+        let base_uri = b"https://uowzmkydtkkfpldhprmm.supabase.co/storage/v1/object/public/pokemon-nfts/";
         
         let i = 0;
         while (i < MAX_POKEMON) {
@@ -194,6 +199,26 @@ module pokemon_marketplace::main {
                 price: new_price,
             },
         );
+    }
+
+    fun fractionalize_pokemon(
+        owner: address,
+        pokemon_id: u64,
+        num_shares: u64,
+    ): vector<FractionalShare> {
+        assert!(num_shares > 0, error::invalid_argument(10)); 
+
+        let shares = vector::empty<FractionalShare>();
+        let i = 0;
+        while (i < num_shares) {
+            let share = FractionalShare {
+                owner,
+                share: 1, 
+            };
+            vector::push_back(&mut shares, share);
+            i = i + 1;
+        };
+        shares
     }
 
     #[view]
